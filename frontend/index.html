@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asistente IA CBTIS 226</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Efectos futuristas fuera del chat -->
+        <div class="futuristic-effects">
+            <div class="floating-particles"></div>
+            <div class="energy-rings"></div>
+            <div class="light-beams"></div>
+        </div>
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-robot"></i>
+                    <h1>Asistente IA CBTIS 226</h1>
+                </div>
+                <div class="header-actions">
+                    <button id="profileButton" class="profile-button" title="Perfil de usuario">
+                        <i class="fas fa-user"></i>
+                    </button>
+                </div>
+            </div>
+            <p class="subtitle">Tu asistente escolar especializado para resolver dudas y explicar conceptos</p>
+        </header>
+
+        <main class="main-content">
+            <div class="chat-container">
+                <div class="chat-rays"></div>
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message bot-message">
+                        <div class="message-content">
+                            <p id="welcomeMessage">¡Hola! Soy tu asistente escolar del CBTIS 226. Estoy aquí para ayudarte con tus dudas académicas y explicarte cualquier concepto que necesites. ¿En qué puedo ayudarte hoy?</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input-container">
+                    <div class="input-wrapper">
+                        <textarea
+                            id="userInput"
+                            placeholder="Escribe tu pregunta aquí..."
+                            rows="3"
+                            maxlength="1000"
+                        ></textarea>
+                        <div class="input-buttons">
+                            <button id="imageButton" class="send-button image-button" title="Adjuntar imagen">
+                                <i class="fas fa-image"></i>
+                            </button>
+                            <button id="sendButton" class="send-button">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                        <input type="file" id="imageInput" accept="image/*" style="display: none;">
+                    </div>
+                    <div class="input-info">
+                        <span id="charCount">0 / 1000 caracteres</span>
+                    </div>
+                    <div id="imagePreview" class="image-preview" style="display: none;">
+                        <img id="previewImg" src="" alt="Vista previa">
+                        <button id="removeImage" class="remove-image">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <div class="loading-overlay" id="loadingOverlay">
+            <div class="loading-spinner">
+                <div class="spinner"></div>
+                <p>Pensando...</p>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

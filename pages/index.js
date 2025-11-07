@@ -622,12 +622,6 @@ export default function Home() {
           </div>
         </main>
 
-        <div className={`loading-overlay ${isLoading ? 'active' : ''}`}>
-          <div className="loading-spinner">
-            <div className="spinner"></div>
-            <p>Pensando...</p>
-          </div>
-        </div>
       </div>
     </>
   )

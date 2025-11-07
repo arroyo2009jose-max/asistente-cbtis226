@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Asistente IA CBTIS 226 con Next.js para despliegue en Vercel",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

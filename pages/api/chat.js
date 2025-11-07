@@ -1,4 +1,4 @@
-const OpenAI = require('openai');
+import OpenAI from 'openai';
 
 // Configurar OpenAI
 const openai = new OpenAI({

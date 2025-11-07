@@ -1,7 +1,7 @@
-import OpenAI from 'openai';
-import formidable from 'formidable';
-import fs from 'fs';
-import path from 'path';
+const OpenAI = require('openai');
+const formidable = require('formidable');
+const fs = require('fs');
+const path = require('path');
 
 // Configurar OpenAI
 const openai = new OpenAI({

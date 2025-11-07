@@ -98,6 +98,13 @@ export default async function handler(req, res) {
         return res.status(405).json({ error: 'Method not allowed' });
     }
 
+    // Log de depuración
+    console.log('=== INICIO DE PETICIÓN A API CHAT ===');
+    console.log('Método:', req.method);
+    console.log('Headers:', req.headers);
+    console.log('API Key disponible:', !!process.env.OPENAI_API_KEY);
+    console.log('API Key length:', process.env.OPENAI_API_KEY ? process.env.OPENAI_API_KEY.length : 0);
+
     try {
         const { message, history = [], userEmail } = req.body;
 
@@ -215,6 +222,11 @@ Inspira confianza y motiva a los estudiantes a aprender. Usa frases de ánimo co
         const maxTokens = req.body.image ? 1000 : 1500; // Más tokens para texto puro
         const temperature = req.body.image ? 0.7 : 0.8; // Un poco más creativo para texto
 
+        console.log('=== LLAMANDO A OPENAI ===');
+        console.log('Modelo:', model);
+        console.log('Mensajes a enviar:', messages.length);
+        console.log('Max tokens:', maxTokens);
+
         // Llamar a la API de OpenAI
         const completion = await openai.chat.completions.create({
             model: model,
@@ -226,10 +238,15 @@ Inspira confianza y motiva a los estudiantes a aprender. Usa frases de ánimo co
             presence_penalty: 0
         });
 
+        console.log('=== RESPUESTA DE OPENAI RECIBIDA ===');
+        console.log('Choices:', completion.choices.length);
+        console.log('Usage:', completion.usage);
+
         // Extraer la respuesta
         const response = completion.choices[0].message.content.trim();
         
         console.log(`Respuesta generada: ${response.substring(0, 100)}${response.length > 100 ? '...' : ''}`);
+        console.log('=== ENVIANDO RESPUESTA AL CLIENTE ===');
 
         // Enviar respuesta al cliente
         res.json({
@@ -239,30 +256,44 @@ Inspira confianza y motiva a los estudiantes a aprender. Usa frases de ánimo co
         });
 
     } catch (error) {
-        console.error('Error al procesar la solicitud:', error);
+        console.error('=== ERROR EN API CHAT ===');
+        console.error('Error completo:', error);
+        console.error('Mensaje de error:', error.message);
+        console.error('Status:', error.status);
+        console.error('Tipo de error:', error.constructor.name);
+        
+        // Si es un error de OpenAI, mostrar más detalles
+        if (error.response) {
+            console.error('Respuesta de error de OpenAI:', error.response.data);
+        }
 
         // Manejar diferentes tipos de errores
         if (error.status === 401) {
+            console.error('ERROR 401: Problema de autenticación');
             return res.status(500).json({
                 error: 'Error de autenticación con OpenAI. Verifica tu API key.'
             });
         }
 
         if (error.status === 429) {
+            console.error('ERROR 429: Límite de velocidad excedido');
             return res.status(429).json({
                 error: 'Has excedido el límite de solicitudes a OpenAI. Inténtalo más tarde.'
             });
         }
 
         if (error.status === 400) {
+            console.error('ERROR 400: Solicitud inválida');
             return res.status(400).json({
                 error: 'Solicitud inválida a OpenAI.'
             });
         }
 
+        console.error('ERROR GENÉRICO: Enviando error 500');
         // Error genérico
         res.status(500).json({
-            error: 'Error interno del servidor al procesar tu solicitud.'
+            error: 'Error interno del servidor al procesar tu solicitud.',
+            details: error.message
         });
     }
 }

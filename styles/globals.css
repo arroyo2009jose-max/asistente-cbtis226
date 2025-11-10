@@ -1272,12 +1272,14 @@ body::before {
 
 /* Subject Selector Styles */
 .subject-selector {
-    position: relative;
+    position: absolute;
+    left: 20px;
+    top: 20px;
     z-index: 100;
 }
 
 .subject-button {
-    background: linear-gradient(135deg, rgba(0, 125, 241, 0.2) 0%, rgba(0, 86, 179, 0.2) 100%);
+    background: white;
     color: #007DF1;
     border: 2px solid rgba(0, 125, 241, 0.3);
     border-radius: 12px;
@@ -1291,10 +1293,11 @@ body::before {
     font-weight: 500;
     min-width: 160px;
     backdrop-filter: blur(5px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .subject-button:hover {
-    background: linear-gradient(135deg, rgba(0, 125, 241, 0.3) 0%, rgba(0, 86, 179, 0.3) 100%);
+    background: white;
     border-color: #007DF1;
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(0, 125, 241, 0.3);
@@ -1321,7 +1324,7 @@ body::before {
 .subject-dropdown {
     position: absolute;
     top: calc(100% + 10px);
-    right: 0;
+    left: 0;
     background: rgba(15, 23, 42, 0.95);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(0, 125, 241, 0.3);
@@ -1419,8 +1422,9 @@ body::before {
 
 /* Responsive para el subject selector */
 @media (max-width: 768px) {
-    .header-actions {
-        gap: 10px;
+    .subject-selector {
+        left: 10px;
+        top: 10px;
     }
     
     .subject-button {
@@ -1445,10 +1449,9 @@ body::before {
 }
 
 @media (max-width: 480px) {
-    .header-actions {
-        flex-direction: column;
-        gap: 8px;
-        align-items: flex-end;
+    .subject-selector {
+        left: 5px;
+        top: 5px;
     }
     
     .subject-button {
@@ -1458,7 +1461,7 @@ body::before {
     }
     
     .subject-dropdown {
-        right: -10px;
+        left: -10px;
         min-width: 200px;
     }
 }

@@ -510,16 +510,16 @@ export default function Home() {
         </div>
 
         <header className="header">
+          <SubjectSelector
+            selectedSubject={selectedSubject}
+            onSubjectChange={handleSubjectChange}
+          />
           <div className="header-content">
             <div className="logo">
               <i className="fas fa-robot"></i>
               <h1>Asistente IA CBTIS 226</h1>
             </div>
             <div className="header-actions">
-              <SubjectSelector
-                selectedSubject={selectedSubject}
-                onSubjectChange={handleSubjectChange}
-              />
               <button
                 className="profile-button"
                 title={currentUser ? `Sesión activa: ${currentUser}` : 'Iniciar sesión para recordar tus mensajes'}

@@ -17,6 +17,7 @@ export default function Home() {
   const [currentUser, setCurrentUser] = useState(null)
   const [charCount, setCharCount] = useState(0)
   const [showSessionReminder, setShowSessionReminder] = useState(false)
+  const [modalImage, setModalImage] = useState(null)
 
   // Refs
   const chatMessagesRef = useRef(null)
@@ -541,11 +542,11 @@ export default function Home() {
                           />
                         )}
                         {msg.image && (
-                          <img 
-                            src={msg.image} 
-                            alt="Imagen adjunta" 
+                          <img
+                            src={msg.image}
+                            alt="Imagen adjunta"
                             className="message-image"
-                            onClick={() => window.open(msg.image, '_blank')}
+                            onClick={() => setModalImage(msg.image)}
                           />
                         )}
                         {(!msg.content || msg.content.trim() === '') && !msg.image && (
@@ -622,6 +623,17 @@ export default function Home() {
           </div>
         </main>
 
+        {/* Modal para mostrar imágenes ampliadas */}
+        {modalImage && (
+          <div className="image-modal" onClick={() => setModalImage(null)}>
+            <div className="modal-content">
+              <img src={modalImage} alt="Imagen ampliada" />
+              <button className="modal-close" onClick={() => setModalImage(null)}>
+                <i className="fas fa-times"></i>
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </>
   )

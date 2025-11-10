@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import Head from 'next/head'
+import SubjectSelector, { SUBJECTS } from '../components/SubjectSelector'
 
 export default function Home() {
   // Estados
@@ -18,6 +19,7 @@ export default function Home() {
   const [charCount, setCharCount] = useState(0)
   const [showSessionReminder, setShowSessionReminder] = useState(false)
   const [modalImage, setModalImage] = useState(null)
+  const [selectedSubject, setSelectedSubject] = useState('general')
 
   // Refs
   const chatMessagesRef = useRef(null)
@@ -63,16 +65,45 @@ export default function Home() {
     setCurrentUser(email)
     
     // Actualizar mensaje de bienvenida
+    const currentSubject = SUBJECTS[selectedSubject]
     setMessages(prev => [
       {
         id: 'welcome',
-        content: `¡Hola ${email}! Soy tu asistente escolar del CBTIS 226. Estoy aquí para ayudarte con tus dudas académicas y explicarte cualquier concepto que necesites. ¿En qué puedo ayudarte hoy?`,
+        content: `¡Hola ${email}! Soy tu asistente especializado en ${currentSubject.name} del CBTIS 226. Estoy aquí para ayudarte con tus dudas académicas y explicarte cualquier concepto que necesites. ¿En qué puedo ayudarte hoy?`,
         role: 'bot',
         image: null
       }
     ])
     
     loadUserHistory(email)
+  }
+
+  const handleSubjectChange = (subjectKey) => {
+    setSelectedSubject(subjectKey)
+    const currentSubject = SUBJECTS[subjectKey]
+    
+    // Actualizar mensaje de bienvenida si hay un usuario logueado
+    if (currentUser) {
+      setMessages(prev => [
+        {
+          id: 'welcome',
+          content: `¡Hola ${currentUser}! He cambiado mi especialización a ${currentSubject.name}. Ahora puedo ayudarte con dudas específicas de esta área. ¿En qué puedo asistirte?`,
+          role: 'bot',
+          image: null
+        },
+        ...prev.slice(1)
+      ])
+    } else {
+      setMessages(prev => [
+        {
+          id: 'welcome',
+          content: `¡Hola! Soy tu asistente especializado en ${currentSubject.name} del CBTIS 226. Estoy aquí para ayudarte con tus dudas académicas y explicarte cualquier concepto que necesites. ¿En qué puedo ayudarte hoy?`,
+          role: 'bot',
+          image: null
+        },
+        ...prev.slice(1)
+      ])
+    }
   }
 
   const logout = () => {
@@ -82,10 +113,11 @@ export default function Home() {
     localStorage.removeItem('sessionActive')
     setCurrentUser(null)
     
+    const currentSubject = SUBJECTS[selectedSubject]
     setMessages([
       {
         id: 'welcome',
-        content: '¡Hola! Soy tu asistente escolar del CBTIS 226. Estoy aquí para ayudarte con tus dudas académicas y explicarte cualquier concepto que necesites. ¿En qué puedo ayudarte hoy?',
+        content: `¡Hola! Soy tu asistente especializado en ${currentSubject.name} del CBTIS 226. Estoy aquí para ayudarte con tus dudas académicas y explicarte cualquier concepto que necesites. ¿En qué puedo ayudarte hoy?`,
         role: 'bot',
         image: null
       }
@@ -203,7 +235,8 @@ export default function Home() {
       const requestData = {
         message: trimmedMessage,
         history: conversationHistory,
-        userEmail: currentUser
+        userEmail: currentUser,
+        subject: selectedSubject
       }
       
       if (tempImage) {
@@ -483,8 +516,12 @@ export default function Home() {
               <h1>Asistente IA CBTIS 226</h1>
             </div>
             <div className="header-actions">
-              <button 
-                className="profile-button" 
+              <SubjectSelector
+                selectedSubject={selectedSubject}
+                onSubjectChange={handleSubjectChange}
+              />
+              <button
+                className="profile-button"
                 title={currentUser ? `Sesión activa: ${currentUser}` : 'Iniciar sesión para recordar tus mensajes'}
                 onClick={toggleProfileMenu}
                 style={{

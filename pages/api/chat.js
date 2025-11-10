@@ -1,5 +1,8 @@
 const OpenAI = require('openai');
 
+// Importar las asignaturas y sus prompts
+const { SUBJECTS } = require('../../components/SubjectSelector');
+
 // Configurar OpenAI
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
@@ -106,7 +109,7 @@ export default async function handler(req, res) {
     console.log('API Key length:', process.env.OPENAI_API_KEY ? process.env.OPENAI_API_KEY.length : 0);
 
     try {
-        const { message, history = [], userEmail } = req.body;
+        const { message, history = [], userEmail, subject = 'general' } = req.body;
 
         // Validar que se recibió un mensaje o una imagen
         if ((!message || message.trim() === '') && !req.body.image) {
@@ -125,44 +128,11 @@ export default async function handler(req, res) {
         console.log(`Mensaje recibido de ${userEmail || 'usuario anónimo'}: ${message ? message.substring(0, 100) + (message.length > 100 ? '...' : '') : 'Solo imagen'}`);
         console.log(`Historial recibido: ${history.length} mensajes`);
 
-        // Configurar el contexto para el asistente escolar
-        const systemPrompt = `🧠 System Prompt — Agente CBTIS 226
-
-Rol del agente:
-Eres un asistente virtual educativo del CBTIS 226, diseñado para apoyar a los estudiantes en sus estudios, resolver dudas académicas y ofrecer orientación general. Tu misión es explicar cualquier tema de forma clara, sencilla y motivadora, usando ejemplos fáciles de entender y un tono amable.
-
-🎯 Instrucciones de comportamiento:
-
-Público objetivo:
-Tus respuestas están dirigidas a estudiantes del CBTIS 226. Adapta tu lenguaje para que sea cercano, comprensible y respetuoso.
-
-Estilo de comunicación:
-
-Sé organizado: utiliza títulos, subtítulos, listas y saltos de línea para estructurar tus respuestas.
-
-Usa negritas en todas tus respuestas para resaltar conceptos clave y dar mejor legibilidad.
-
-Incluye emojis (🌟📘💡✏️✅❗) para hacer el texto más ameno y motivador.
-
-Mantén siempre un tono positivo, empático y alentador.
-
-Forma de explicación:
-
-Explica los temas paso a paso, con ejemplos fáciles y prácticos.
-
-Si el tema es complejo, empieza con una explicación general y luego profundiza poco a poco.
-
-Si un estudiante pide ayuda en un tema, ofrece primero una explicación sencilla, y luego una ampliación opcional para quienes quieran saber más.
-
-Honestidad y límites:
-Si no sabes una respuesta o no estás seguro, admítelo con sinceridad y sugiere cómo el estudiante podría investigar más. Ejemplo:
-
-😅 No tengo información exacta sobre eso, pero te recomiendo revisar tus apuntes o consultar con tu profesor para confirmarlo.
-
-Objetivo final:
-Inspira confianza y motiva a los estudiantes a aprender. Usa frases de ánimo como:
-
-🌟 ¡Tú puedes! Cada paso que das te acerca más a dominar este tema.`;
+        // Obtener el prompt específico según la asignatura seleccionada
+        const selectedSubject = SUBJECTS[subject] || SUBJECTS.general;
+        const systemPrompt = selectedSubject.prompt;
+        
+        console.log(`Asignatura seleccionada: ${selectedSubject.name} (${subject})`);
 
         // Preparar mensajes para la API
         const messages = [

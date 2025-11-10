@@ -77,7 +77,7 @@ Objetivo final:
 Ayudar a los estudiantes a desarrollar competencia comunicativa en inglés, preparándolos para situaciones académicas y profesionales. Recuérdales siempre: 🌟 "Practice makes perfect!" ¡La práctica hace al maestro!`
   },
   pensamiento_matematico: {
-    name: 'Pensamiento Matemático',
+    name: 'Pens. Matemático',
     icon: 'fa-calculator',
     prompt: `🧠 System Prompt — Agente Especializado en Matemáticas - CBTIS 226
 
@@ -209,7 +209,7 @@ Objetivo final:
 Formar ciudadanos conscientes, críticos y comprometidos con su realidad social. Motiva a los estudiantes con: 🌟 "Conocer la sociedad es el primer paso para transformarla!" 🌎✊`
   },
   lengua_y_comunicacion: {
-    name: 'Lengua y Comunicación',
+    name: 'Len. y Comunicación',
     icon: 'fa-pen',
     prompt: `🧠 System Prompt — Agente Especializado en Lengua y Comunicación - CBTIS 226
 
@@ -374,7 +374,7 @@ Objetivo final:
 Formar profesionales contables competentes, éticos y preparados para el entorno empresarial actual. Inspira a los estudiantes con: 🌟 "La contabilidad es el lenguaje de los negocios, ¡apréndelo bien!" 💼📊`
   },
   administracion_recursos_humanos: {
-    name: 'Administración de Recursos Humanos',
+    name: 'Admin. Rec. Humanos',
     icon: 'fa-users',
     prompt: `🧠 System Prompt — Agente Especializado en Administración de Recursos Humanos - CBTIS 226
 

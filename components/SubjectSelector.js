@@ -453,12 +453,12 @@ export default function SubjectSelector({ selectedSubject, onSubjectChange }) {
 
   return (
     <div className="subject-selector">
-      <button 
+      <button
         className="subject-button"
         onClick={() => setIsOpen(!isOpen)}
       >
         <i className={`fas ${currentSubject.icon}`}></i>
-        <span>{currentSubject.name}</span>
+        <span className="subject-name">{currentSubject.name}</span>
         <i className={`fas fa-chevron-${isOpen ? 'up' : 'down'}`}></i>
       </button>
       
@@ -476,7 +476,7 @@ export default function SubjectSelector({ selectedSubject, onSubjectChange }) {
                 onClick={() => handleSelect(key)}
               >
                 <i className={`fas ${subject.icon}`}></i>
-                <span>{subject.name}</span>
+                <span className="subject-option-name">{subject.name}</span>
               </button>
             ))}
           </div>
@@ -492,7 +492,7 @@ export default function SubjectSelector({ selectedSubject, onSubjectChange }) {
                 onClick={() => handleSelect(key)}
               >
                 <i className={`fas ${subject.icon}`}></i>
-                <span>{subject.name}</span>
+                <span className="subject-option-name">{subject.name}</span>
               </button>
             ))}
           </div>

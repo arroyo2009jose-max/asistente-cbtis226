@@ -613,9 +613,16 @@ export default function Home() {
             <div className="chat-messages" ref={chatMessagesRef}>
               {showSessionReminder && (
                 <div className="message bot-message session-reminder">
-                  <div className="message-content">
-                    <p>💡 <strong>Inicia sesión para recordar tus mensajes</strong></p>
-                    <p>Con tu correo electrónico podrás guardar todo tu historial de conversaciones y continuar donde lo dejaste.</p>
+                  <div className="message-header">
+                    <div className="message-avatar">
+                      <i className="fas fa-robot"></i>
+                    </div>
+                  </div>
+                  <div className="message-content-wrapper">
+                    <div className="message-content">
+                      <p>💡 <strong>Inicia sesión para recordar tus mensajes</strong></p>
+                      <p>Con tu correo electrónico podrás guardar todo tu historial de conversaciones y continuar donde lo dejaste.</p>
+                    </div>
                   </div>
                 </div>
               )}
@@ -624,42 +631,50 @@ export default function Home() {
                 <div key={msg.id} className={`message ${msg.role}-message`}>
                   {msg.role === 'thinking' ? (
                     <>
-                      <div className="thinking-avatar">
-                        <i className="fas fa-robot"></i>
-                      </div>
-                      <div className="thinking-content">
-                        <div className="thinking-dots">
-                          <div className="thinking-dot"></div>
-                          <div className="thinking-dot"></div>
-                          <div className="thinking-dot"></div>
+                      <div className="message-header">
+                        <div className="thinking-avatar">
+                          <i className="fas fa-robot"></i>
                         </div>
-                        <span className="thinking-text">Pensando...</span>
+                      </div>
+                      <div className="message-content-wrapper">
+                        <div className="thinking-content">
+                          <div className="thinking-dots">
+                            <div className="thinking-dot"></div>
+                            <div className="thinking-dot"></div>
+                            <div className="thinking-dot"></div>
+                          </div>
+                          <span className="thinking-text">Pensando...</span>
+                        </div>
                       </div>
                     </>
                   ) : (
                     <>
-                      <div className="message-avatar">
-                        <i className={msg.role === 'user' ? "fas fa-user" : "fas fa-robot"}></i>
+                      <div className="message-header">
+                        <div className="message-avatar">
+                          <i className={msg.role === 'user' ? "fas fa-user" : "fas fa-robot"}></i>
+                        </div>
                       </div>
-                      <div className="message-content">
-                        {msg.content && (
-                          <p 
-                            dangerouslySetInnerHTML={{ 
-                              __html: formatMessage(msg.content) 
-                            }} 
-                          />
-                        )}
-                        {msg.image && (
-                          <img
-                            src={msg.image}
-                            alt="Imagen adjunta"
-                            className="message-image"
-                            onClick={() => setModalImage(msg.image)}
-                          />
-                        )}
-                        {(!msg.content || msg.content.trim() === '') && !msg.image && (
-                          <p>{msg.role === 'user' ? 'Mensaje de audio' : 'Respuesta de audio'}</p>
-                        )}
+                      <div className="message-content-wrapper">
+                        <div className="message-content">
+                          {msg.content && (
+                            <p
+                              dangerouslySetInnerHTML={{
+                                __html: formatMessage(msg.content)
+                              }}
+                            />
+                          )}
+                          {msg.image && (
+                            <img
+                              src={msg.image}
+                              alt="Imagen adjunta"
+                              className="message-image"
+                              onClick={() => setModalImage(msg.image)}
+                            />
+                          )}
+                          {(!msg.content || msg.content.trim() === '') && !msg.image && (
+                            <p>{msg.role === 'user' ? 'Mensaje de audio' : 'Respuesta de audio'}</p>
+                          )}
+                        </div>
                       </div>
                     </>
                   )}

@@ -1023,20 +1023,20 @@ body::before {
     }
     
     .message-content {
-        max-width: 85%;
+        width: 100%;
         padding: 12px 15px;
         font-size: 0.95rem;
     }
     
     /* Mejora específica para mensajes del bot en móvil */
     .bot-message .message-content {
-        max-width: 92%;
+        width: 100%;
         line-height: 1.6;
     }
     
     /* Ajuste para mensajes del usuario en móvil */
     .user-message .message-content {
-        max-width: 80%;
+        width: 100%;
     }
     
     /* Input container mejorado para móvil */
@@ -1161,20 +1161,20 @@ body::before {
     }
     
     .message-content {
-        max-width: 80%;
+        width: 100%;
         padding: 10px 12px;
         font-size: 0.9rem;
     }
     
     /* Mejora específica para mensajes del bot en pantallas muy pequeñas */
     .bot-message .message-content {
-        max-width: 90%;
+        width: 100%;
         line-height: 1.5;
     }
     
     /* Ajuste para mensajes del usuario en pantallas muy pequeñas */
     .user-message .message-content {
-        max-width: 75%;
+        width: 100%;
     }
     
     .input-container {

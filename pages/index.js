@@ -317,13 +317,84 @@ export default function Home() {
   const handleImageSelect = (e) => {
     const file = e.target.files[0]
     if (file && file.type.startsWith('image/')) {
+      // Validar tamaño del archivo (máximo 15MB para mejor procesamiento)
+      const MAX_FILE_SIZE = 15 * 1024 * 1024; // 15MB
+      if (file.size > MAX_FILE_SIZE) {
+        showNotification('La imagen es demasiado grande. Por favor, selecciona una imagen más pequeña (máximo 15MB).')
+        if (fileInputRef.current) {
+          fileInputRef.current.value = ''
+        }
+        return
+      }
+
+      // Validar formato
+      const validFormats = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp']
+      if (!validFormats.includes(file.type)) {
+        showNotification('Formato de imagen no compatible. Por favor, usa JPEG, PNG, GIF o WebP.')
+        if (fileInputRef.current) {
+          fileInputRef.current.value = ''
+        }
+        return
+      }
+
       const reader = new FileReader()
       reader.onload = function(event) {
-        setSelectedImage(event.target.result)
+        const img = new Image()
+        img.onload = function() {
+          // Validar dimensiones (máximo 4000x4000 para mejor procesamiento)
+          if (this.width > 4000 || this.height > 4000) {
+            showNotification('La imagen es muy grande. Por favor, usa una imagen con dimensiones menores a 4000x4000 píxeles.')
+            if (fileInputRef.current) {
+              fileInputRef.current.value = ''
+            }
+            return
+          }
+
+          // Comprimir imagen si es muy grande
+          const canvas = document.createElement('canvas')
+          const ctx = canvas.getContext('2d')
+          
+          // Reducir tamaño si es necesario (máximo 1920x1920 para optimizar)
+          let width = this.width
+          let height = this.height
+          const maxSize = 1920
+          
+          if (width > maxSize || height > maxSize) {
+            if (width > height) {
+              height = (height * maxSize) / width
+              width = maxSize
+            } else {
+              width = (width * maxSize) / height
+              height = maxSize
+            }
+            
+            canvas.width = width
+            canvas.height = height
+            ctx.drawImage(img, 0, 0, width, height)
+            
+            // Convertir a JPEG con calidad 0.8 para reducir tamaño
+            const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.8)
+            setSelectedImage(compressedDataUrl)
+          } else {
+            setSelectedImage(event.target.result)
+          }
+        }
+        
+        img.onerror = function() {
+          showNotification('No se pudo cargar la imagen. Por favor, selecciona otra imagen.')
+          if (fileInputRef.current) {
+            fileInputRef.current.value = ''
+          }
+        }
+        
+        img.src = event.target.result
       }
       reader.readAsDataURL(file)
     } else {
       showNotification('Por favor, selecciona un archivo de imagen válido.')
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ''
+      }
     }
   }
 

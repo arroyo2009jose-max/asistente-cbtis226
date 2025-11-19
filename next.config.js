@@ -5,12 +5,8 @@ const nextConfig = {
   env: {
     CUSTOM_KEY: process.env.CUSTOM_KEY,
   },
-  // Configuración para manejar archivos y API routes
-  api: {
-    bodyParser: {
-      sizeLimit: '10mb',
-    },
-  },
+  // Configuración para manejar archivos (Next.js 13+ no necesita api.bodyParser)
+  // El manejo de archivos se hace directamente en las API routes
   // Configuración para imágenes
   images: {
     domains: [],

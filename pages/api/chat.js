@@ -160,19 +160,44 @@ export default async function handler(req, res) {
         // Procesar imagen si existe (en base64)
         if (req.body.image) {
             try {
-                // Si la imagen viene como base64
+                // Validar que la imagen esté en formato base64 válido
                 if (typeof req.body.image === 'string') {
+                    // Verificar que sea un base64 válido y no demasiado grande
+                    const base64Data = req.body.image;
+                    const base64Size = Buffer.byteLength(base64Data, 'base64');
+                    
+                    // Límite de 20MB para la imagen (aproximadamente)
+                    const MAX_IMAGE_SIZE = 20 * 1024 * 1024;
+                    
+                    if (base64Size > MAX_IMAGE_SIZE) {
+                        console.error('Imagen demasiado grande:', base64Size, 'bytes');
+                        return res.status(400).json({
+                            error: 'La imagen es demasiado grande. Por favor, usa una imagen más pequeña (máximo 20MB).'
+                        });
+                    }
+                    
+                    // Validar formato de imagen
+                    if (!base64Data.match(/^data:image\/(jpeg|jpg|png|gif|webp);base64,/)) {
+                        console.error('Formato de imagen no válido');
+                        return res.status(400).json({
+                            error: 'Formato de imagen no compatible. Por favor, usa JPEG, PNG, GIF o WebP.'
+                        });
+                    }
+                    
                     userContent.push({
                         type: "image_url",
                         image_url: {
-                            url: req.body.image
+                            url: base64Data,
+                            detail: "low" // Reducir detalle para procesamiento más rápido
                         }
                     });
+                } else {
+                    throw new Error('Formato de imagen inválido');
                 }
             } catch (error) {
                 console.error('Error al procesar la imagen:', error);
-                return res.status(500).json({
-                    error: 'Error al procesar la imagen'
+                return res.status(400).json({
+                    error: 'Error al procesar la imagen. Verifica que el formato sea compatible y el tamaño no exceda los límites.'
                 });
             }
         }
@@ -196,9 +221,20 @@ export default async function handler(req, res) {
         console.log('Modelo:', model);
         console.log('Mensajes a enviar:', messages.length);
         console.log('Max tokens:', maxTokens);
+        console.log('¿Con imagen?:', !!req.body.image);
 
-        // Llamar a la API de OpenAI
-        const completion = await openai.chat.completions.create({
+        // Configurar timeout para evitar peticiones colgadas (60 segundos para imágenes, 30 para texto)
+        const timeoutMs = req.body.image ? 60000 : 30000;
+
+        // Crear un controlador de timeout
+        const timeoutPromise = new Promise((_, reject) => {
+            setTimeout(() => {
+                reject(new Error('Timeout: La solicitud tardó demasiado en procesarse. Inténtalo con una imagen más simple o sin imagen.'));
+            }, timeoutMs);
+        });
+
+        // Llamar a la API de OpenAI con timeout
+        const completionPromise = openai.chat.completions.create({
             model: model,
             messages: messages,
             max_tokens: maxTokens,
@@ -207,6 +243,9 @@ export default async function handler(req, res) {
             frequency_penalty: 0,
             presence_penalty: 0
         });
+
+        // Usar Promise.race para manejar el timeout
+        const completion = await Promise.race([completionPromise, timeoutPromise]);
 
         console.log('=== RESPUESTA DE OPENAI RECIBIDA ===');
         console.log('Choices:', completion.choices.length);
@@ -254,8 +293,39 @@ export default async function handler(req, res) {
 
         if (error.status === 400) {
             console.error('ERROR 400: Solicitud inválida');
+            // Errores específicos de imágenes
+            if (req.body.image && error.message && (
+                error.message.includes('image') ||
+                error.message.includes('vision') ||
+                error.message.includes('format') ||
+                error.message.includes('size')
+            )) {
+                return res.status(400).json({
+                    error: 'La imagen no pudo ser procesada. Intenta con una imagen más clara, simple o con mejor calidad. Formatos compatibles: JPEG, PNG, GIF, WebP.'
+                });
+            }
             return res.status(400).json({
                 error: 'Solicitud inválida a OpenAI.'
+            });
+        }
+
+        // Error de timeout específico
+        if (error.message && error.message.includes('Timeout')) {
+            console.error('ERROR DE TIMEOUT:', error.message);
+            return res.status(408).json({
+                error: 'La imagen es demasiado compleja para procesar. Por favor, intenta con una imagen más simple o describe lo que necesitas en texto.'
+            });
+        }
+
+        // Error específico para procesamiento de imágenes
+        if (req.body.image && error.message && (
+            error.message.includes('invalid_image') ||
+            error.message.includes('image_format') ||
+            error.message.includes('image_size')
+        )) {
+            console.error('ERROR DE IMAGEN:', error.message);
+            return res.status(400).json({
+                error: 'No se pudo procesar la imagen. Verifica que sea una imagen clara y en formato compatible (JPEG, PNG, GIF, WebP) con un tamaño razonable.'
             });
         }
 
@@ -263,7 +333,7 @@ export default async function handler(req, res) {
         // Error genérico
         res.status(500).json({
             error: 'Error interno del servidor al procesar tu solicitud.',
-            details: error.message
+            details: process.env.NODE_ENV === 'development' ? error.message : undefined
         });
     }
 }

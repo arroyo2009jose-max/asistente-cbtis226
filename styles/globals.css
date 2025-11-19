@@ -493,6 +493,14 @@ body::before {
     flex-direction: row;
 }
 
+.user-message .message-content-wrapper {
+    align-items: flex-end;
+}
+
+.bot-message .message-content-wrapper {
+    align-items: flex-start;
+}
+
 .message-avatar {
     width: 35px;
     height: 35px;
@@ -526,14 +534,14 @@ body::before {
 
 /* Mejora general para mensajes del bot */
 .bot-message .message-content {
-    max-width: 95%;
+    width: 100%;
     line-height: 1.5;
     align-self: flex-start;
 }
 
 /* Ajuste para mensajes del usuario */
 .user-message .message-content {
-    max-width: 95%;
+    width: 100%;
     align-self: flex-end;
 }
 

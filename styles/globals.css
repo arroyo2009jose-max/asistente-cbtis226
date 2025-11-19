@@ -479,10 +479,12 @@ body::before {
 
 .user-message {
     align-items: flex-end;
+    justify-content: flex-end;
 }
 
 .bot-message {
     align-items: flex-start;
+    justify-content: flex-start;
 }
 
 .user-message .message-header {
@@ -494,11 +496,11 @@ body::before {
 }
 
 .user-message .message-content-wrapper {
-    align-items: flex-end;
+    justify-content: flex-end;
 }
 
 .bot-message .message-content-wrapper {
-    align-items: flex-start;
+    justify-content: flex-start;
 }
 
 .message-avatar {
@@ -1052,6 +1054,7 @@ body::before {
         flex-direction: row;
         align-items: flex-end;
         gap: 10px;
+        justify-content: flex-end;
     }
     
     #userInput {

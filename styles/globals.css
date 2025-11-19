@@ -543,6 +543,7 @@ body::before {
 .user-message .message-content {
     width: 100%;
     align-self: flex-end;
+    text-align: right;
 }
 
 .user-message .message-content {
@@ -1037,6 +1038,7 @@ body::before {
     /* Ajuste para mensajes del usuario en móvil */
     .user-message .message-content {
         width: 100%;
+        text-align: right;
     }
     
     /* Input container mejorado para móvil */
@@ -1175,6 +1177,7 @@ body::before {
     /* Ajuste para mensajes del usuario en pantallas muy pequeñas */
     .user-message .message-content {
         width: 100%;
+        text-align: right;
     }
     
     .input-container {

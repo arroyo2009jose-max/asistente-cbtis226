@@ -526,7 +526,8 @@ body::before {
 }
 
 .message-content {
-    max-width: 70%;
+    width: auto;
+    max-width: 90%;
     padding: 15px 20px;
     border-radius: 18px;
     position: relative;
@@ -535,14 +536,16 @@ body::before {
 
 /* Mejora general para mensajes del bot */
 .bot-message .message-content {
-    max-width: 70%;
+    width: auto;
+    max-width: 90%;
     line-height: 1.5;
     align-self: flex-start;
 }
 
 /* Ajuste para mensajes del usuario */
 .user-message .message-content {
-    max-width: 70%;
+    width: auto;
+    max-width: 90%;
     align-self: flex-end;
     text-align: left; /* El texto dentro del contenido alineado a la izquierda para lectura natural */
 }
@@ -1025,20 +1028,23 @@ body::before {
     }
     
     .message-content {
-        max-width: 85%;
+        width: auto;
+        max-width: 95%;
         padding: 12px 15px;
         font-size: 0.95rem;
     }
     
     /* Mejora específica para mensajes del bot en móvil */
     .bot-message .message-content {
-        max-width: 85%;
+        width: auto;
+        max-width: 95%;
         line-height: 1.6;
     }
     
     /* Ajuste para mensajes del usuario en móvil */
     .user-message .message-content {
-        max-width: 85%;
+        width: auto;
+        max-width: 95%;
         text-align: left; /* El texto dentro del contenido alineado a la izquierda para lectura natural */
     }
     
@@ -1165,20 +1171,23 @@ body::before {
     }
     
     .message-content {
-        max-width: 90%;
+        width: auto;
+        max-width: 98%;
         padding: 10px 12px;
         font-size: 0.9rem;
     }
     
     /* Mejora específica para mensajes del bot en pantallas muy pequeñas */
     .bot-message .message-content {
-        max-width: 90%;
+        width: auto;
+        max-width: 98%;
         line-height: 1.5;
     }
     
     /* Ajuste para mensajes del usuario en pantallas muy pequeñas */
     .user-message .message-content {
-        max-width: 90%;
+        width: auto;
+        max-width: 98%;
         text-align: left; /* El texto dentro del contenido alineado a la izquierda para lectura natural */
     }
     

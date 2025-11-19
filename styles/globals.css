@@ -543,7 +543,7 @@ body::before {
 .user-message .message-content {
     width: 100%;
     align-self: flex-end;
-    text-align: right;
+    text-align: left; /* El texto dentro del contenido alineado a la izquierda para lectura natural */
 }
 
 .user-message .message-content {
@@ -1038,7 +1038,7 @@ body::before {
     /* Ajuste para mensajes del usuario en móvil */
     .user-message .message-content {
         width: 100%;
-        text-align: right;
+        text-align: left; /* El texto dentro del contenido alineado a la izquierda para lectura natural */
     }
     
     /* Input container mejorado para móvil */
@@ -1177,7 +1177,7 @@ body::before {
     /* Ajuste para mensajes del usuario en pantallas muy pequeñas */
     .user-message .message-content {
         width: 100%;
-        text-align: right;
+        text-align: left; /* El texto dentro del contenido alineado a la izquierda para lectura natural */
     }
     
     .input-container {
